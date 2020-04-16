@@ -1,0 +1,19 @@
+* Client side
+- Has 5 function
+	* Login by user-password
+	* Get an IP by input a Domain
+	* Add new pair Domain-IP
+	* Update a pair Domain-IP
+	* Remove a Pair Domain-IP
+- For every User, each has their own database
+- Connect with server by gRPC architecture
+- WinForm App with GUI, using C#
+- Assigned to Trung && Duy
+
+*Server side
+- Console App, using Golang
+- Assigned to Ha
+
+*Presentation
+- Slide and Demo online
+- Slide Assigned to Duy

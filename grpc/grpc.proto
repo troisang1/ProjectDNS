@@ -1,0 +1,22 @@
+syntax = "proto3"; 
+ 
+package api;
+ 
+service HandleRequest { // Local implement server
+    rpc Login(User) returns (Mess) {}
+    rpc Service(Command) returns (Mess) {}
+}
+
+message User {
+    string userName     = 1;
+    string password     = 2;
+}
+message Mess {
+    string content  = 1;
+}
+message Command {
+    string command  = 1;
+    string ip       = 2;
+    string domain   = 3;
+    string user     = 4;
+}
