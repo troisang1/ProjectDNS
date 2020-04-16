@@ -1,0 +1,13 @@
+
+type User {
+  id: ID! @id
+  userName: String! @unique
+  passWord: String!
+}
+
+type Domain{
+  id: Int! @id
+  ip: String! 
+  name: String! @unique
+  author: String!
+}
