@@ -5,6 +5,7 @@ package api;
 service HandleRequest { // Local implement server
     rpc Login(User) returns (Mess) {}
     rpc Service(Command) returns (Mess) {}
+    rpc Logout(Command) returns (Mess) {}
 }
 
 message User {

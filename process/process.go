@@ -8,7 +8,10 @@ import (
 	"context"
 	"google.golang.org/grpc"
 	"net"
+	"math/rand"
 )
+
+var RegisUser  = make(map[string] string)
 
 type handleRequestServer struct {
 	Api.UnimplementedHandleRequestServer
@@ -39,7 +42,9 @@ func MakingGrpcServer(listener net.Listener) {
 func (entity *handleRequestServer) Login(ctx context.Context, data *Api.User) (*Api.Mess, error) {
 	tmp, err := prisma.Login(data.UserName, data.Password)
 	if err != 0 {
-		return &Api.Mess{Content: tmp}, nil
+		id := Random()
+		RegisUser[id] = tmp
+		return &Api.Mess{Content: id}, nil
 	}
 	return &Api.Mess{Content: "Denied"}, nil
 }
@@ -49,20 +54,33 @@ func (entity *handleRequestServer) Service(ctx context.Context, data *Api.Comman
 		tmp := prisma.GetIp(data.Domain)
 		return &Api.Mess{Content: tmp}, nil
 	}
-
+	UserId := RegisUser[data.User]
 	if data.Command == "ADD" {
-		tmp := prisma.Add(data.Domain, data.Ip, data.User)
+		tmp := prisma.Add(data.Domain, data.Ip, UserId)
 		return &Api.Mess{Content: tmp}, nil
 	}
 
 	if data.Command == "REMOVE" {
-		tmp := prisma.Remove(data.Domain, data.User)
+		tmp := prisma.Remove(data.Domain, UserId)
 		return &Api.Mess{Content: tmp}, nil
 	}
 
 	if data.Command == "UPDATE" {
-		tmp := prisma.Update(data.Domain, data.Ip, data.User)
+		tmp := prisma.Update(data.Domain, data.Ip, UserId)
 		return &Api.Mess{Content: tmp}, nil
 	}
+	if data.Command == "LOGOUT" {
+		delete(RegisUser, data.User)
+		return &Api.Mess{Content: "Accept"}, nil
+	}
 	return &Api.Mess{Content: "Undefine"}, nil
+}
+
+func Random() string {
+	char := "qwertyuioplkjhgfdsazxcvbnm1234567890."
+	id := ""
+	for i:=0; i<10; i++ {
+		id = id + string(char[rand.Intn(len(char))])
+	}
+	return id
 }
